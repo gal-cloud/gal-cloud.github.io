@@ -1,0 +1,38 @@
+2023-03-31-week_5_memo.markdown
+
+1
+greedy algorithm(탐욕 알고리즘) - 주어진 상황에 대해 최적화된 경로를 구함(근시안적 코드)
+
+최소신장트리 - 간선의 최소값
+
+
+Prim algorithm 
+1. 임의의 정점 선택 D[a] = 0으로 초기화 (아마 distance)
+2. 선택한 정점에서 가중치가 최소인 경로로 탐색
+3. 경로의 정점이랑 시작점을 하나의 정점으로 인식
+
+Kruskal
+점들의 밀도가 낮을 때 유용
+O(mlogm)
+
+Prim
+점들의 밀도가 높을 때 유용
+O(n^2)
+
+FractionalKnapsack 부분 배낭 최적화 알고리즘
+greedy algorithm과 동일
+이중배열 int[][]쓰면 용이할듯
+
+today keyword
+
+HashSet
+Collections
+Comparator
+String.format
+int[][]
+isNotCyclic(method)
+@Override
+Scanner
+implements 상속?
+constructor
+toString
