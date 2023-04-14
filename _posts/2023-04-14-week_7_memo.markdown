@@ -15,7 +15,7 @@ AB[10 5] X C[5 15] = ABC[10 15] = 5 * 10 * 15 = 750
 ABC[10 15] X D[15 30] = ABCD[10 30] = 10 * 15 * 30 = 4500
 num = 1000 + 750 + 4500 = 6250
 
-'''
+```
 public class week_7_1 {
     public static void main(String[] args) {
 
@@ -69,7 +69,7 @@ class Matrix{
         this.n = a.row * a.col;
     }
 }
-'''
+```
 // 복습
 ===============================================
 배낭 문제
@@ -79,7 +79,7 @@ Item1	5	10
 Item2	4	40
 Item3	6	30
 Item4	3	50
-'''
+```
 import java.util.*;
 public class week_7_2 {
 
@@ -129,4 +129,4 @@ class Item{
         this.v = v;
     }
 }
-'''
+```
