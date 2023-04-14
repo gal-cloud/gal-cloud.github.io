@@ -1,0 +1,132 @@
+2023-04-14-week_7_memo.markdown
+
+연속행렬곱셈
+Matrix
+(row, col, n, name)
+(matrix a, matrix b)
+
+A[10 20]
+B[20 5]
+C[5 15]
+D[15 30]
+
+A[10 20] X B[20 5] = AB[10 5] = 10 * 20 * 5 = 1000
+AB[10 5] X C[5 15] = ABC[10 15] = 5 * 10 * 15 = 750
+ABC[10 15] X D[15 30] = ABCD[10 30] = 10 * 15 * 30 = 4500
+num = 1000 + 750 + 4500 = 6250
+
+'''
+public class week_7_1 {
+    public static void main(String[] args) {
+
+        Matrix[][] array = new Matrix[4][4];
+        array[0][0] = new Matrix(10, 20, "A");
+        array[1][1] = new Matrix(20, 5,"B");
+        array[2][2] = new Matrix(5, 15, "C");
+        array[3][3] = new Matrix(15, 30, "D");
+
+        for(int i=0 ; i<4; i++){
+            for(int j=0 ; j<4 ; j++){
+                if(array[i][j] == null) {
+                    System.out.printf("X\t");
+                }else{
+                    System.out.printf("%s\t", array[i][j].name);
+                }
+            }
+            System.out.println();
+        }
+        int[][] c = new int[array.length][array.length];
+
+        for (int i=0 ; i<array.length ; i++){
+            for(int j=0 ; j<array.length ; j++){
+                System.out.println(c[i][j]);
+            }
+        } // 출력 반복문
+
+        for (int L=0 ; L<array.length-2 ; L++){
+            for(int i=0 ; i<array.length-2 ; i++){
+                int j = i+L;
+                c[i][j] = Integer.MAX_VALUE;
+                for(int k=0 ; k<j-2 ; k++){
+                    int temp = c[i][k] + c[k+1][ j];
+                }
+            }
+        }
+    }
+}
+class Matrix{
+    int row, col, n;
+    String name;
+    public Matrix(int row, int col, String name){
+        this.row = row;
+        this.col = col;
+        this.n = 0;
+        this.name = name;
+    }
+    public Matrix(Matrix a, Matrix b){
+        this.row = a.row;
+        this.col = b.col;
+        this.n = a.row * a.col;
+    }
+}
+'''
+// 복습
+===============================================
+배낭 문제
+배낭무게, 물건 무게, 물건 가치가 주어짐
+backWeight = 10
+Item1	5	10
+Item2	4	40
+Item3	6	30
+Item4	3	50
+'''
+import java.util.*;
+public class week_7_2 {
+
+    public static void main(String[] args) {
+
+        int capacity = 10;
+
+        Item[] item = new Item[4];
+        item[0] = new Item(5, 10);
+        item[1] = new Item(4, 40);
+        item[2] = new Item(6, 30);
+        item[3] = new Item(3, 50);
+
+
+        int[][] k = new int[4 + 1][10 + 1];
+        for (int i = 0; i < 4; i++) k[i][0] = 0;
+        for (int w = 0; w < 11; w++) k[0][w] = 0;
+
+        for (int i = 1; i < 5; i++) {
+            for (int w = 1; w < 11; w++) { // 1. 새 물건을 못넣는 경우
+                if (item[i - 1].w > w) {
+                    k[i][w] = k[i - 1][w];
+                } else { // 2. 새 물건을 넣는 경우
+                    int x = item[i - 1].v + k[i - 1][w - item[i - 1].w];
+                    int y = k[i - 1][w];
+                    k[i][w] = Math.max(x, y);
+                }
+            }
+        }
+
+        for (int i = 1; i < 5; i++){
+            for (int j = 1; j < 11; j++) {
+                System.out.printf("%2d ", k[i][j]);
+            }
+            System.out.println();
+        }
+
+
+
+    }
+}
+
+class Item{
+    int w, v;
+    public Item(int w, int v){
+        this.w = w;
+        this.v = v;
+    }
+}
+'''
