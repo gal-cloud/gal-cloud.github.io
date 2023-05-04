@@ -1,0 +1,65 @@
+2023-05-02-"Midterm_FFT_202001601".markdown
+
+### 정보통신공학과 202001601 갈민수
+
+# FFT(Fast Fourier Transform) : 고속 푸리에 변환
+
+## FFT란?
+
+* 시간 영역에서의 데이터를 주파수 영역으로 변환하여 분석
+* 주기적인 신호의 주기와 진폭, 위상, 주파수를 분석하는데 유용
+* 주로 디지털 신호 처리에 사용
+* 계산 속도가 느린 DFT를 개선하기 위해 만든 알고리즘
+* FFT는 시간 축으로 측정된 데이터를 주파수 축으로 볼 수 있게 함
+* 주파수 별 강도, 섞인 주파수, 노이즈의 정도를 파악 가능
+* FFT로 도출된 데이터를 PSD(Power Spectrum Density)로 변환하면 샘플링이나 데이터 수량에 관계없이 일정한 값을 PSD값을 가진 그래프를 얻을 수도 있다.
+* 음악 및 음성처리, 이미지처리, 센서 데이터 분석 등의 분야에서 사용
+
+## DFT와 FFT
+
+* DFT는 Discrete Fourier Transform, 이산푸리에변환이라는 뜻이다.
+* DFT와 FFT는 계산 결과에 차이가 없다.
+* FFT는 DFT를 실행하는 컴퓨터 알고리즘이며, DFT를 쓰던 때와 달리 컴퓨터의 성능이 올라갔으므로 컴퓨터의 구조와 효율을 고려하여 DFT를 운용하는 알고리즘이다.
+* FFT는 O(NlogN), DFT는 O(N^2)으로 FFT는 DFT에 비해 데이터의 양이 많을수록 실행시간이 훨씬 단축되는 시간복잡도를 가졌다.
+
+## FFT 알고리즘의 종류
+
+* 입력 신호를 작은 크기의 입력들로 재귀적인 분할 과정을 거친 후, 다시 결합하는 과정을 거쳐 FFT를 계산한다. 이는 계산 시간을 효과적으로 줄일 수 있다.
+* 가장 많이 이용되는 알고리즘은 cooley-tukey 알고리즘이다. 이 알고리즘은 많은 분야에서 효율적으로 이용된다.
+* cooley-tukey 알고리즘은 radix-2 알고리즘이다. 일반적으로 cooley-tukey 알고리즘은 입력크기가 2의 거듭제곱인 데이터를 받아 계산하고, 이때 알고리즘은 정적인 배열을 이용해 계산한다.
+
+## cooley-tukey algorithm의 소개 (github link 첨부)
+
+* https://gal-cloud.github.io/2023/05/04/FFT_main.html (Cooley-tukey Algorithm Main File)
+* https://gal-cloud.github.io/2023/05/04/FFT_complex.html (Cooley-tukey Algorithm Complex Class File)
+출처 : https://introcs.cs.princeton.edu/java/97data/FFT.java.html , https://algs4.cs.princeton.edu/code/edu/princeton/cs/algs4/Complex.java.html
+
+* cooley-tukey 알고리즘은 정적인 배열을 사용하므로 입력 가능한 데이터 크기가 정해져 있고, 입력받을 데이터의 크기를 늘리려면 코드를 수정하는 과정을 거쳐야 한다.
+* cooley-tukey 알고리즘은 radix-2 알고리즘이다. 일반적으로 cooley-tukey 알고리즘은 입력크기가 2의 거듭제곱인 데이터를 받아 계산하고, 이때 알고리즘은 정적인 배열을 이용해 계산한다.
+* cooley-tukey 알고리즘은 재귀적으로 분할을 거쳐 복소수로 변환 후 재결합하여 계산하는데, 분할하는 과정을 거치므로 2의 거듭제곱의 데이터가 입력되어야 효율적인 계산이 가능하다. 그 외의 경우에는 코드를 재구성해야 하는 경우가 있을 수 있다.
+
+## FFT의 사용 이유
+
+### 기계적 결함 분석
+
+* FFT는 시간 영역의 데이터를 주파수 영역으로 변환하므로, 이용되는 여러 영역 중에서도 기계 또는 시스템의 결함 분석, 품질 관리 및 상태 모니터링에 효과적으로 사용된다. 
+* 아래 사진은 FT(Fourier Transform)이 시간 영역의 데이터를 각각의 주기로 나누어 복소변환의 과정을 거쳐 샘플링 한 후 다시 주파수 영역으로 변환하여 신호를 보는 모습을 모델링한 것이다.
+![주파수 모델링](https://www.nti-audio.com/portals/0/pic/news/FFT-Time-Frequency-View-540.png)
+* 위에서 이야기한 기계적인 결함 분석의 경우, 일정한 주기 동안의 데이터를 모아 주파수 영역의 데이터로 확인한다면 결함을 찾을 수 있을 것이다.
+
+### 음악 분야
+
+* 음악 분야에서도 주파수 영역에서의 데이터를 도출하여 장르를 구분한다.
+* 악기별로 소리의 주파수 스펙트럼이 다르므로, 이를 이용해 팝, 락, 클래식, 그 외 종류로 음악을 분류할 수 있다.
+
+### 이미지 처리 분야
+
+* FFT는 이미지 압축에도 사용될 수 있다.
+* 2D이미지는 시간영역의 데이터가 아니지만, 이미지의 x or y축을 시간영역으로 두고 좌표에 따라 변하는 데이터를 분석하여 처리한다.
+
+### 통신 분야
+
+* OFDM(Orthogonal Frequency Division Multiplexing)은 여러 반송파 주파수에서 디지털 데이터를 인코딩하기 위해 디지털 변조에 사용되는 디지털 전송 유형
+* OFDM은 디지털 TV, 오디오, DSL 인터넷 액세스, 무선 네트워크, 전력선 네트워크, 4G/5G 모바일 통신과 같은 Application에 사용되는 광대역 디지털 통신을 위한 방식
+* OFDM이 시간 영역에서 OFDM 심볼을 생성하기 위해 주파수 영역 부반송파에서 역 FFT 변환(IFFT)이 수행되고, 마지막으로 OFDM 심볼에 대해 FFT를 수행하여 원래 데이터 비트로 복구를 진행
+![OFDM 신호와 주파수&시간 영역 간의 상호 관계](https://rfmw.em.keysight.com/wireless/helpfiles/89600b/webhelp/subsystems/wlan-ofdm/content/resources/image/ofdm%20freq-time%20representation.png)
