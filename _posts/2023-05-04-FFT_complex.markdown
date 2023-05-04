@@ -48,6 +48,7 @@
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
+ '''
 class Complex {
     private final double re;   // the real part
     private final double im;   // the imaginary part
@@ -265,7 +266,7 @@ class Complex {
     }
 
 }
-
+'''
 /******************************************************************************
  *  Copyright 2002-2022, Robert Sedgewick and Kevin Wayne.
  *
