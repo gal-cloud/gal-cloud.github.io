@@ -1,6 +1,6 @@
 2023-05-04-"FFT_complex".markdown
 
-/******************************************************************************
+/**
  *  Compilation:  javac Complex.java
  *  Execution:    java Complex
  *  Dependencies: StdOut.java
@@ -27,8 +27,7 @@
  *  conj(a)      = 5.0 - 6.0i
  *  |a|          = 7.810249675906654
  *  tan(a)       = -6.685231390246571E-6 + 1.0000103108981198i
- *
- ******************************************************************************/
+**/
 
 
 /**
@@ -47,8 +46,9 @@
  *
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
- */
- ```
+ **/
+
+``` 
 class Complex {
     private final double re;   // the real part
     private final double im;   // the imaginary part
@@ -267,6 +267,7 @@ class Complex {
 
 }
 ```
+
 /******************************************************************************
  *  Copyright 2002-2022, Robert Sedgewick and Kevin Wayne.
  *
