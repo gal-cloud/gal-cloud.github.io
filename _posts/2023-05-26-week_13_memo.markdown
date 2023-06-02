@@ -1,0 +1,8 @@
+2023-05-26-"week_13_memo".markdown
+
+Genetic Algorithm (유전자 알고리즘)
+
+적자생존의 개념을 기반으로 함
+
+Gnetic Algorithm은 second-dimentional function이 일반적임
+
