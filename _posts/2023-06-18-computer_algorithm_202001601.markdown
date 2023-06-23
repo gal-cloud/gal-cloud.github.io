@@ -30,21 +30,21 @@
 #### 독립변수 : 미국의 천연가스 재고량
 
 * (https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EB%AF%B8%EA%B5%AD+%EC%B2%9C%EC%97%B0%EA%B0%80%EC%8A%A4+%EC%9E%AC%EA%B3%A0)
-![Alt text](https://drive.google.com/file/d/1fXmOJ3Af8PSfDcGbRtXHII0yCVP0f6V3/view?usp=drive_link)
+![재고](https://drive.google.com/file/d/1fXmOJ3Af8PSfDcGbRtXHII0yCVP0f6V3/view?usp=drive_link)
 
 #### 종속변수 : 미국 천연가스 선물지수인 Bloomberg Natural Gas TR 주가
 
 * (https://kr.investing.com/indices/bbg-natural-gas-tr)
-![Alt text](https://drive.google.com/file/d/1xUCul_4CCbCcQpc8YtwlDt7d1RCcHtvn/view?usp=drive_link)
+![주가](https://drive.google.com/file/d/1xUCul_4CCbCcQpc8YtwlDt7d1RCcHtvn/view?usp=drive_link)
 
 #### 2022.07.14 ~ 2023.06.15 천연가스의 재고량과 천연가스의 선물지수 주가 변동
 
 * (https://gal-cloud.github.io/2023/06/20/2_dimension_dataSet.html)
-![Alt text](https://drive.google.com/file/d/1qrL9aWsweqNXga3C8pjL_Tx2FYcuUODx/view?usp=drive_link)
+![데이터셋](https://drive.google.com/file/d/1qrL9aWsweqNXga3C8pjL_Tx2FYcuUODx/view?usp=drive_link)
 
 #### 데이터를 x-y 좌표로 시각화 한 형태
 
-![Alt text](https://drive.google.com/file/d/14WODqtf8TxxV_cEuubSTLvpt7rrtGmGr/view?usp=drive_link)
+![시각화](https://drive.google.com/file/d/14WODqtf8TxxV_cEuubSTLvpt7rrtGmGr/view?usp=drive_link)
 
 ### 2. 모의담금질 알고리즘 구현
 
@@ -103,7 +103,7 @@ public static int MSE(ArrayList<Point> data, int a, int b) {
 ### 4. n번 실행에 대한 result
 
 * 초기온도 : 500 | 감소율 : 0.9 | 시행횟수 : 1000번
-![Alt text](https://drive.google.com/file/d/19C8ad5fam5lWGZXZzRV38gP7gqud5XUy/view?usp=drive_link)
+![result](https://drive.google.com/file/d/19C8ad5fam5lWGZXZzRV38gP7gqud5XUy/view?usp=drive_link)
 * 최적해
 * MSE : 78807
 * a = 1, b= 532 => y = x + 532
@@ -182,7 +182,7 @@ public class main {
 ### 6. 결론
 
 * 우선, annealing 함수에서 초기온도 설정을 위한 int par[] 부분에서 0, 0 이외에도 많은 값을 대입해봤다. 여러 값을 번갈아가며 대입하여 결과를 비교해보니 최적해는 항상 a = 1, b = 532였고, 이를 일차함수로 변환하면 y = x + 532이다. 이 일차함수를 시각화 된 데이터에 겹쳐서 확인해보았다.
-![Alt text](https://drive.google.com/file/d/1bSo43l4NWsPR3lQovJG2lDq091lRwgCF/view?usp=drive_link)
+![시각화 & 최적 해](https://drive.google.com/file/d/1bSo43l4NWsPR3lQovJG2lDq091lRwgCF/view?usp=drive_link)
 * 구한 최적 해와 데이터를 겹쳐서 시각화해보니 y = x + 532가 최적 해로 적절하다고 판단된다.
 * 일차 선형 회귀분석이기 때문에 일차함수가 최적 해로 도출됐지만, 이 함수는 데이터를 대표할 수 없는 함수라고 생각된다. 처음의 가설과 비교하여 결과를 분석하자면, 우상향 함수가 나왔으므로 천연가스 재고량이 증가할수록 선물 지수도 증가해야한다는 결론이다. 하지만, 재고량이 0부터 100B 사이인 구간에서 선물 지수가 낮은 구간과 높은 구간 모두 데이터가 분포되어 있다. 이는 이전의 결과를 부정하는 데이터이다. 그러므로, 이 일차함수로는 해당 데이터를 대표할 수 없다고 판단하였다. 데이터의 분포를 보았을때, 선형적인 함수로는 데이터를 대표할 수 없다고 생각된다. 그 말인 즉슨, 선물 지수는 단순히 재고량에 의해서만 결정되는 부분이 아니라는 것이다. 맨 처음 가설에서 언급했듯, 러-우 전쟁과 미국의 천연가스 생산량, 국제 정세, 타국의 천연가스 생산량 등, 미국에서 발생하는 요소들로만 선물 지수는 결정되지 않는다는 결론이다.
 
