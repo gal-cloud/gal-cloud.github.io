@@ -1,0 +1,189 @@
+2023-06-18-"computer_algorithm_202001601".markdown
+
+# 선형 회귀분석 (linear Regression)
+
+* 회귀분석이란? 둘 이상의 독립, 종속 변수에 대해 그래프로 관계를 나타내는 통계적 방법
+* 선형 회귀분석 : 회귀분석을 선형적인 모델로 나타내는 방법
+* 2차원 데이터 : 두개의 데이터가 한 쌍을 이루어 독립과 종속의 관계.
+
+## 2차원 데이터 선형 회귀분석
+
+1. 주어진 2차원 Data Set을 X-Y plane에 나타낸다.
+2. 모의담금질 기법을 이용해 무작위로 매개변수 a, b를 얻어낸다.
+3. 얻은 매개변수 a, b를 y=ax+b의 일차함수로 만든다.
+4. y = ax + b를 손실함수에 대입해 오차평균을 도출한다. 손실함수는 MSE(Mean Squared Error) Algorithm을 이용해 구현한다. 여기서 MSE Algorithm은 평균 제곱 오차를 구하는 알고리즘으로 y = ax + b와 데이터 사이의 거리를 제곱한다. 이 과정을 모든 데이터에 대해 진행하고 합산하여 평균값을 반환하는 함수이다.
+5. 3, 4번의 과정을 n번 반복하여, 가장 손실값이 작게 나온 매개변수 a, b를 선형회귀분석의 해로 정한다.
+
+## 선형 회귀분석 과정
+
+* 선형 회귀분석의 목적은 선형적인 특성을 가진 함수로 주어진 독립, 종속 관계의 데이터에 대해 상관관계를 분석하기 위함이다.
+* 예시를 들기 위해 준비한 데이터는 미국 천연가스 재고량과 선물 지수이다. 재고량은 독립변수이고, 선물 지수는 종속변수이다.
+* 우선, 미국 천연가스를 주제로 삼은 이유는, 러-우 전쟁의 장기화로 인해 천연가스 생산에서 큰 비중을 담당하던 러시아의 공급이 사라졌다. 그로 인해 미국의 천연가스는 더욱 많은 수요를 감당하게 되었다. 현 상황에서 유용한 투자 상품이 될 수 있는 미국의 천연가스를 선형 회귀분석을 통해 수요와 공급의 일관성에 대해 분석한다면, 상당히 실용적인 분석 예시가 될 것이다.
+* 독립변수인 천연가스 재고량은 미국에서 생산되어 비축되는 천연가스 재고량을 의미한다. 재고량은 -가 될 수도 있으며, 해외로의 수출이 잦다.
+* 종속변수인 선물 지수(Futures Index)는 인덱스 펀드라고도 불리우며, 해당 지수의 움직임을 따라간다. 여기선 천연가스의 움직임을 따라가는데, 미국 천연가스의 수출량이 많아질수록 지수도 상승한다.
+* 이 데이터로 선형 회귀분석을 실행하기 전, 실험 목표이자 가설을 정한다.
+* 대안가설 - "천연가스 재고량의 변화가 선물 지수에 반영된다."
+* 세부가설 - "천연가스 재고량이 낮아질수록, 수요와 공급의 원칙에 따라 선물 지수가 상승한다."
+
+### 1. 2차원 Data Set 정의
+
+#### 독립변수 : 미국의 천연가스 재고량
+
+* (https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EB%AF%B8%EA%B5%AD+%EC%B2%9C%EC%97%B0%EA%B0%80%EC%8A%A4+%EC%9E%AC%EA%B3%A0)
+![Alt text](%EC%9E%AC%EA%B3%A0%EB%9F%89-1.png)
+
+#### 종속변수 : 미국 천연가스 선물지수인 Bloomberg Natural Gas TR 주가
+
+* (https://kr.investing.com/indices/bbg-natural-gas-tr)
+![Alt text](%EC%A3%BC%EA%B0%80-1.jpeg)
+
+#### 2022.07.14 ~ 2023.06.15 천연가스의 재고량과 천연가스의 선물지수 주가 변동
+
+* (https://gal-cloud.github.io/2023/06/20/2_dimension_dataSet.html)
+![Alt text](dataSet-1.png)
+
+#### 데이터를 x-y 좌표로 시각화 한 형태
+
+![Alt text](<데이터 시각화-1.png>)
+
+### 2. 모의담금질 알고리즘 구현
+
+```
+ public static int[] perturb(int[] par) { 
+        Random r = new Random();
+        int parX = r.nextInt(31) - 15;
+        int parY = r.nextInt(31) - 15;
+        int[] parNew = {par[0] + parX, par[1] + parY};
+        return parNew;
+    }
+    public static int[] annealing(ArrayList<Point> data, int n, float a, float t0) {
+        Random r = new Random();
+        int[] par = {3, 500};
+        int bestMSE = MSE(data, par[0], par[1]);
+        int best_a = 0;
+        int best_b = 0;
+        float t = t0;
+        for (int i = 0; i < 100; i++) {
+            for (int j=0 ; j<n ; j++) {
+                int[] newPar = perturb(par);
+                int newMSE = MSE(data, newPar[0], newPar[1]);
+                int d = newMSE - bestMSE;
+                float p = r.nextFloat();
+                if (p <= Math.exp((float) -d / t)) {
+                    par = newPar;
+                    bestMSE = newMSE;
+                    best_a = newPar[0];
+                    best_b = newPar[1];
+                }
+            }
+            t *= a;
+        }
+        int[] bestSet = {bestMSE, best_a, best_b};
+        return bestSet;
+    }
+```
+
+### 3. MSE(Mean Squared Error)를 이용해 손실함수 구현
+
+* MSE 함수가 fit (int x)에 해당. 매개변수 두개와 2차원 데이터셋을 받아야 하므로 인수는 int x가 아닌, 아래와 같이 인수를 받는다.
+```
+public static int MSE(ArrayList<Point> data, int a, int b) {
+        int pred_y, real_y;
+        int sum = 0;
+        for (int i=0 ; i < data.size() ; i++) {
+            Point pt = data.get(i);
+            real_y = pt.y;
+            pred_y = pt.x * a + b;
+            sum += (pred_y - real_y) * (pred_y - real_y);
+        }
+        return sum / data.size();
+    }
+```
+
+### 4. n번 실행에 대한 result
+
+* 초기온도 : 500 | 감소율 : 0.9 | 시행횟수 : 1000번
+![Alt text](result_1-1.png)
+* 최적해
+* MSE : 78807
+* a = 1, b= 532 => y = x + 532
+
+### 5. 전체 Code
+
+```
+import java.util.*;
+import java.awt.*;
+
+public class main {
+    public static int MSE(ArrayList<Point> data, int a, int b) { // MSE(Mean Squared Error) 계산법을 이용해 손실함수 구현
+        int pred_y, real_y;
+        int sum = 0;
+        for (int i=0 ; i < data.size() ; i++) {
+            Point pt = data.get(i);
+            real_y = pt.y;
+            pred_y = pt.x * a + b;
+            sum += (pred_y - real_y) * (pred_y - real_y);
+        }
+        return sum / data.size();
+    }
+    public static int[] perturb(int[] par) {
+        Random r = new Random();
+        int parX = r.nextInt(31) - 15;
+        int parY = r.nextInt(31) - 15;
+        int[] parNew = {par[0] + parX, par[1] + parY};
+        return parNew;
+    }
+    public static int[] annealing(ArrayList<Point> data, int n, float a, float t0) {
+        Random r = new Random();
+        int[] par = {3, 500};
+        int bestMSE = MSE(data, par[0], par[1]);
+        int best_a = 0;
+        int best_b = 0;
+        float t = t0;
+        for (int i = 0; i < 100; i++) {
+            for (int j=0 ; j<n ; j++) {
+                int[] newPar = perturb(par);
+                int newMSE = MSE(data, newPar[0], newPar[1]);
+                int d = newMSE - bestMSE;
+                float p = r.nextFloat();
+                if (p <= Math.exp((float) -d / t)) {
+                    par = newPar;
+                    bestMSE = newMSE;
+                    best_a = newPar[0];
+                    best_b = newPar[1];
+                }
+            }
+            t *= a;
+        }
+        int[] bestSet = {bestMSE, best_a, best_b};
+        return bestSet;
+    }
+    public static void main(String[] args) {
+        ArrayList<Point> data = new ArrayList<>();
+
+        int[] remain = {58, 32, 15, 41, 44, 18, 60, 61, 54, 77, 103, 103, 129, 125, 111, 52, 107, 79, 64, -80, -81, -21, -50, -87, -213,
+                -221, 11, -82, -91, -151, -217, -71, -81, -84, -58, -72, -47, -23, 25, 75, 54, 54, 78, 99, 96, 110, 104, 84};
+        double[] price = {0.7425, 0.7510, 0.7363, 0.7989, 0.8509, 0.8466, 0.8033, 0.7306, 0.7098, 0.6358, 0.6144, 0.5959, 0.4872, 0.5044,
+                0.5728, 0.5315, 0.5704, 0.6231, 0.5344, 0.5292, 0.5368, 0.4238, 0.3940, 0.3259, 0.3074, 0.2922, 0.2745, 0.2324, 0.2438, 0.2188, 0.2370,
+                0.2759, 0.2250, 0.2153, 0.2080, 0.1954, 0.1775, 0.1882, 0.1922, 0.1910, 0.1721, 0.1810, 0.2011, 0.1798, 0.1617, 0.1675, 0.1949, 0.1971};
+        int[] priceWon = new int[48];
+        for (int i=0 ; i<48 ; i++) {
+            priceWon[i] = (int)(price[i] * 1300); // 2022.07 ~ 2023.06 동안의 평균적인 환율을 계산하여 원화로 환산
+            data.add(new Point(remain[i], priceWon[i]));
+        }
+
+        int[] x = annealing(data, 1000, 0.9f, 500);
+        System.out.printf("%d %d %d", x[0], x[1], x[2]);
+
+    }
+}
+```
+
+### 6. 결론
+
+* 우선, annealing 함수에서 초기온도 설정을 위한 int par[] 부분에서 0, 0 이외에도 많은 값을 대입해봤다. 여러 값을 번갈아가며 대입하여 결과를 비교해보니 최적해는 항상 a = 1, b = 532였고, 이를 일차함수로 변환하면 y = x + 532이다. 이 일차함수를 시각화 된 데이터에 겹쳐서 확인해보았다.
+![Alt text](<데이터 시각화 & 최적 해 대입-1.png>)
+* 구한 최적 해와 데이터를 겹쳐서 시각화해보니 y = x + 532가 최적 해로 적절하다고 판단된다.
+* 일차 선형 회귀분석이기 때문에 일차함수가 최적 해로 도출됐지만, 이 함수는 데이터를 대표할 수 없는 함수라고 생각된다. 처음의 가설과 비교하여 결과를 분석하자면, 우상향 함수가 나왔으므로 천연가스 재고량이 증가할수록 선물 지수도 증가해야한다는 결론이다. 하지만, 재고량이 0부터 100B 사이인 구간에서 선물 지수가 낮은 구간과 높은 구간 모두 데이터가 분포되어 있다. 이는 이전의 결과를 부정하는 데이터이다. 그러므로, 이 일차함수로는 해당 데이터를 대표할 수 없다고 판단하였다. 데이터의 분포를 보았을때, 선형적인 함수로는 데이터를 대표할 수 없다고 생각된다. 그 말인 즉슨, 선물 지수는 단순히 재고량에 의해서만 결정되는 부분이 아니라는 것이다. 맨 처음 가설에서 언급했듯, 러-우 전쟁과 미국의 천연가스 생산량, 국제 정세, 타국의 천연가스 생산량 등, 미국에서 발생하는 요소들로만 선물 지수는 결정되지 않는다는 결론이다.
+
+* 결론 - 처음 가정했던 가설은 증명되지 못했으며, 천연가스 선물 지수는 재고량에 의해서만 결정되는 것이 아니다. 고로, 이 데이터를 정확하게 분석하기 위해서는 2차원 데이터셋이 아닌, 여러 요소들이 더 적용된 고차원 데이터셋이 분석되어야 하고, 선형적인 회귀분석이 아닌 다중 회귀분석이 요구되는 데이터라고 생각된다.
